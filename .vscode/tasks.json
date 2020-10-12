@@ -34,9 +34,10 @@
 				]
 			},
 			"python": {
-				//"file": "${file}",
-				"file": "run_training.py",
-				//"justMyCode": false
+				// For starting the currently in the editor selected file:
+				"file": "${relativeFile}",
+				// For starting the programs main file:
+				//"file": "run_training.py",
 			}
 		}
 	]
