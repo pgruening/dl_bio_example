@@ -9,6 +9,12 @@ FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04
 
 #https://code.visualstudio.com/docs/containers/quickstart-python
 
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
+
 # Install some basic utilities
 RUN apt-get update && apt-get install -y \
     curl \
