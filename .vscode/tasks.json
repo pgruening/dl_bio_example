@@ -14,7 +14,7 @@
 		},
 		{
 			"type": "docker-run",
-			"label": "docker-run: debug",
+			"label": "docker-run: debug current",
 			"dependsOn": [],
 			"dockerRun": {
 				"image": "dl_workingdir",
@@ -36,8 +36,32 @@
 			"python": {
 				// For starting the currently in the editor selected file:
 				"file": "${relativeFile}",
+			}
+		},
+		{
+			"type": "docker-run",
+			"label": "docker-run: debug general",
+			"dependsOn": [],
+			"dockerRun": {
+				"image": "dl_workingdir",
+				"volumes": [
+					{
+						"localPath": "${workspaceFolder}",
+						"containerPath": "/workingdir:rw\" --gpus all --user $(id -u):$(id -g) --label \"",
+						"permissions": "rw"
+					},
+				],
+				"containerName": "dl",
+				"ports": [
+					{
+						"containerPort": 8889,
+						"hostPort": 8889,
+					}
+				]
+			},
+			"python": {
 				// For starting the programs main file:
-				//"file": "run_training.py",
+				"file": "run_training.py",
 			}
 		}
 	]

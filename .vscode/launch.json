@@ -5,11 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // This configuration is used to debug the file that is selected in the tasks.json
+            // This configuration is used to debug the file that is selected in the editor
+            "name": "Docker: Python - Current",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug current",
+            "python": {
+                "pathMappings": [
+                    // Add further path-mappings if you mount data, etc.
+                    {
+                        "localRoot": "${workspaceFolder}",
+                        "remoteRoot": "/workingdir"
+                    }
+                ],
+                "projectType": "general",
+                "justMyCode": false
+            }
+        },
+        {
+            // This configuration is used to debug the project from its starting point
             "name": "Docker: Python - General",
             "type": "docker",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
+            "preLaunchTask": "docker-run: debug general",
             "python": {
                 "pathMappings": [
                     // Add further path-mappings if you mount data, etc.

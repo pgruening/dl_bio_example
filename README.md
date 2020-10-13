@@ -47,5 +47,6 @@ https://moodle.uni-luebeck.de/mod/forum/discuss.php?d=33479
 
 ## Debugging:
 
-The Debugger will always start the currently in the editor selected file. To change this
-behaviour you must specify the file to run in .vscode/tasks.json line 36 to 41.
+The Debugger has two options. Select "Docker: Python - General" to start debugging the
+project from its main file. Select "Docker: Python - Curretn" to start debugging the
+currently in the editor selected file.
