@@ -48,5 +48,7 @@ https://moodle.uni-luebeck.de/mod/forum/discuss.php?d=33479
 ## Debugging:
 
 The Debugger has two options. Select "Docker: Python - General" to start debugging the
-project from its main file. Select "Docker: Python - Curretn" to start debugging the
+project from its main file. Select "Docker: Python - Current" to start debugging the
 currently in the editor selected file.
+More configurations can be added or present configurations can be changed in the
+./vscode/launch.json and ./vscode/tasks.json.
