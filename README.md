@@ -37,7 +37,8 @@ A supplementary file for the training process.
 
 Upon execution of the docker_build.sh script, a Docker-Image will be created. This image
 will be based on the Dockerfile. Henceforth, you will always have to rebuild the image
-when your dependencies change or are updated (like for example the DLBio-repository).
+when your dependencies change or are updated (like for example the DLBio-repository) and
+you wish to use these updates.
 Execute the docker_run.sh script to launch a Docker-Container in your terminal. This
 container will be based on the Docker-image that was created by the docker_build.sh.
 You can run Files the same way as you would in any other terminal.
