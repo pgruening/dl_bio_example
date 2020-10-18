@@ -1,11 +1,19 @@
+# Inheriting from nvidia/cuda for cuda-support.
 FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04
 
 # for more information see:
 # https://github.com/inb-uni-luebeck/docker/blob/master/example_workingdir/Dockerfile
 
-# NOTE, build with: docker build -t dl_workingdir .
+# NOTE, build with: "docker build -t dl_workingdir ."
+# or by executing the "docker_build.sh" script.
 
 #https://code.visualstudio.com/docs/containers/quickstart-python
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
 
 # Install some basic utilities
 RUN apt-get update && apt-get install -y \
