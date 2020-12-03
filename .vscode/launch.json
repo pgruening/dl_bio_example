@@ -21,7 +21,6 @@
                 "projectType": "general",
                 "justMyCode": false,
             },
-            "pythonPath": "python3",
         },
         {
             // This configuration is used to debug the project from its starting point
@@ -40,7 +39,6 @@
                 "projectType": "general",
                 "justMyCode": false,
             },
-            "pythonPath": "python3",
         },
     ]
 }
