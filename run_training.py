@@ -28,8 +28,8 @@ def get_options():
     parser.add_argument('--device', type=int, default=None)
     parser.add_argument('--seed', type=int, default=0)
 
-    parser.add_argument('--in_dim', type=int, default=3)
-    parser.add_argument('--out_dim', type=int, default=8)
+    parser.add_argument('--in_dim', type=int, default=config.IN_DIM)
+    parser.add_argument('--out_dim', type=int, default=config.NUM_CLASSES)
     parser.add_argument('--model_type', type=str, default=config.MT)
     parser.add_argument('--model_path', type=str, default=None)
     parser.add_argument('--folder', type=str, default='_debug')
@@ -42,7 +42,7 @@ def get_options():
 
     # dataset
     parser.add_argument('--split_index', type=int, default=0)
-    parser.add_argument('--dataset', type=str, default='nat_im')
+    parser.add_argument('--dataset', type=str, default=config.DATASET)
 
     # model saving
     parser.add_argument('--sv_int', type=int, default=0)
@@ -116,6 +116,8 @@ def _train_model(options, folder, device):
     else:
         print('no scheduling used')
         scheduler = None
+        
+    print(f'ds_{options.dataset}')
 
     data_loaders = get_data_loaders(
         options.dataset, options.bs,
@@ -134,6 +136,7 @@ def _train_model(options, folder, device):
         'classification',
         model, device, Printer(config.PRINT_FREQUENCY, log_file),
     )
+    print(f'>> Dataloaders: {data_loaders}')
 
     training = pt_training.Training(
         optimizer, data_loaders['train'], train_interface,
