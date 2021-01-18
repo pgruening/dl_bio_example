@@ -29,7 +29,7 @@ if USER == 'david':
 
     #DATASET = nat_im'
 
-    EXP_FOLDER = './experiments/dl_bio_testsetup'
+    EXP_FOLDER = './experiments'
 
     PRINT_FREQUENCY = 100
 
@@ -51,8 +51,8 @@ if USER == 'david':
         'mom' : 0.9,
         'cs' : 244,
         'bs' : 16,
-        'opt' : 'ADAM',
-        'mt' : 'resnet18'
+        'opt' : 'Adam',
+        'model_type' : 'resnet18'
     }
 
     MNIST_PARAMS = {        
@@ -64,8 +64,8 @@ if USER == 'david':
         'mom' : 0.9,
         'cs' : 244,
         'bs' : 16,
-        'opt' : 'ADAM',
-        'mt' : 'resnet18'
+        'opt' : 'Adam',
+        'model_type' : 'resnet18'
     }
 
 DO_NOT_COPY += [EXP_FOLDER]

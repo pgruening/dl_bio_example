@@ -7,6 +7,7 @@ from DLBio import pt_training
 from DLBio.helpers import check_mkdir, copy_source, save_options
 from DLBio.pt_train_printer import Printer
 from DLBio.pytorch_helpers import get_device, get_num_params
+from kwargs_translator import get_kwargs
 
 import config
 from train_interfaces import get_interface
@@ -27,12 +28,15 @@ def get_options():
     parser.add_argument('--opt', type=str, default=config.OPT)
     parser.add_argument('--device', type=int, default=None)
     parser.add_argument('--seed', type=int, default=0)
+    
+    parser.add_argument('--folder', type=str, default='_debug')
 
+    
+    # model / ds specific params
     parser.add_argument('--in_dim', type=int, default=config.IN_DIM)
     parser.add_argument('--out_dim', type=int, default=config.NUM_CLASSES)
     parser.add_argument('--model_type', type=str, default=config.MT)
     parser.add_argument('--model_path', type=str, default=None)
-    parser.add_argument('--folder', type=str, default='_debug')
     parser.add_argument('--comment', type=str, default='-1')
 
     # scheduling
@@ -45,6 +49,8 @@ def get_options():
     parser.add_argument('--dataset', type=str, default=config.DATASET)
 
     # model saving
+    parser.add_argument('--model_kw', type=str, default=None)
+
     parser.add_argument('--sv_int', type=int, default=0)
     parser.add_argument('--early_stopping', action='store_true')
 
@@ -88,11 +94,14 @@ def _train_model(options, folder, device):
     log_file = join(folder, 'log.json')
     check_mkdir(log_file)
 
+    
+    model_kwargs = get_kwargs(options.model_kw)
+
     model = get_model(
         options.model_type,
         options.in_dim,
         options.out_dim,
-        device
+        device, **model_kwargs
     )
 
     if options.model_path is not None:
