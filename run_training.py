@@ -7,7 +7,7 @@ from DLBio import pt_training
 from DLBio.helpers import check_mkdir, copy_source, save_options
 from DLBio.pt_train_printer import Printer
 from DLBio.pytorch_helpers import get_device, get_num_params
-from kwargs_translator import get_kwargs
+from DLBio.kwargs_translator import get_kwargs
 
 import config
 from train_interfaces import get_interface
@@ -145,7 +145,6 @@ def _train_model(options, folder, device):
         'classification',
         model, device, Printer(config.PRINT_FREQUENCY, log_file),
     )
-    print(f'>> Dataloaders: {data_loaders}')
 
     training = pt_training.Training(
         optimizer, data_loaders['train'], train_interface,
