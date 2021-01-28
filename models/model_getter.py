@@ -1,6 +1,8 @@
 from torchvision.models import resnet18, vgg16_bn, alexnet
 import torch.nn as nn
 
+from models.costum_archs import CustomNet
+
 
 def get_model(model_type, input_dim, output_dim, device, **kwargs):
     if model_type == 'resnet18':
@@ -26,5 +28,6 @@ def get_model(model_type, input_dim, output_dim, device, **kwargs):
         model.model.classifier[-1] = nn.Linear(in_dim, output_dim)
         return model.to(device)
 
-    elif model_type == 'my_model':
-        pass
+    elif model_type == 'custom_net':
+        model = CustomNet(input_dim, output_dim, **kwargs)
+        return model.to(device)
