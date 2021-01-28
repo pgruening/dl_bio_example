@@ -3,8 +3,9 @@ from os.path import join
 
 import config
 from DLBio import pt_run_parallel
+from DLBio.kwargs_translator import to_kwargs_str
 
-DEFAULT_TYPE = 'lr_search'
+DEFAULT_TYPE = 'eval_custom_models'
 AVAILABLE_GPUS = [0]
 
 class TrainingProcess(pt_run_parallel.ITrainingProcess):
@@ -33,6 +34,8 @@ def run():
 def get_param_generator(name):
 	if name == LR_SEARCH.name:
 			return LR_SEARCH()
+	elif name == EVAL_CUSTOM_MODELS.name:
+		return EVAL_CUSTOM_MODELS()
 	
 	raise ValueError(f'unkown input: {name}')
 
@@ -59,6 +62,58 @@ class LR_SEARCH():
 			out['folder'] = join(self.default_folder, f'lr_{lr}/')
 
 			yield out
+
+	
+
+
+class EVAL_CUSTOM_MODELS():
+	name = 'eval_custom_models'
+	
+	def __init__(self):		
+		self.default_values = config.MNIST_PARAMS
+		self.default_values.update({
+			'model_type' : 'custom_net',
+
+		})
+		self.default_folder = EVAL_CUSTOM_MODELS.name
+
+
+
+
+	def __call__(self):
+
+		num_layers = [2,3,5]
+		init_dims = [4,8,10]
+		k = 3
+		seeds = [0,815,42]
+
+
+
+		for seed in seeds:
+			for num_layer in num_layers:
+				for init_dim in init_dims:				
+					model_kwargs = to_kwargs_str({
+						"num_layer" : [num_layer],
+						"init_dim" : [init_dim],
+						"kernel_size" : [k]						
+					})
+
+					out = deepcopy(self.default_values)
+					out['seed'] = seed
+					out['model_kw'] = model_kwargs
+					out['folder'] = join(self.default_folder, f'layer{num_layer}_dim{init_dim}_seed{seed}')
+
+					yield out
+
+				
+
+		
+				
+
+		
+
+
+
 
 
 
