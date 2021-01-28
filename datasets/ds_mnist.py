@@ -33,7 +33,7 @@ def get_dataset(is_train=True, data_path=DATA_FOLDER):
         train=is_train,
         download=True,
         transform=torchvision.transforms.Compose([
-            torchvision.transforms.Resize((197, 197)),
+            # torchvision.transforms.Resize((197, 197)),
             torchvision.transforms.Lambda(lambda x: x.convert('RGB')),
             torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize(

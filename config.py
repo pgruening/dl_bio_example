@@ -5,7 +5,7 @@ if USER == 'philipp':
     # dataset
     NAT_IM_BASE = 'data/natural_images'
 
-    EXP_FOLDER = './experiments'
+    EXP_FOLDER = './experiments/'
 
     PRINT_FREQUENCY = 100
 
@@ -15,7 +15,8 @@ if USER == 'philipp':
     BS = 16
     MOM = 0.9
     CS = 224
-    MT = 'resnet18'
+    MT = 'my_model'
+    # MT = 'resnet18'
     OPT = 'Adam'
 
 if USER == 'david':
@@ -39,7 +40,7 @@ if USER == 'david':
     BS = 16
     MOM = 0.9
     CS = 224
-    MT = 'resnet18'
+    MT = 'custom_net'
     OPT = 'Adam'
 
     NAT_IM_PARAMS = {

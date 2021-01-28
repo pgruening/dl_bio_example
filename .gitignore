@@ -4,3 +4,4 @@ __pycache__/*
 debug.png
 experiments/*
 .vscode/settings.json
+test.py
