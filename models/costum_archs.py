@@ -25,7 +25,6 @@ class CustomNet(nn.Module):
 			nn.Conv2d(in_channels=in_dim, out_channels=in_channels, kernel_size=kernel_size ,bias=False),
 			nn.BatchNorm2d(in_channels)
 		)
-
 		
 
 		for i in range(1, self.num_layers):			
@@ -43,8 +42,13 @@ class CustomNet(nn.Module):
 
 
 	def forward(self, x):
-		x = self.layers(x)[...,0,0]
+		x = self.layers(x)
+		x = x.mean(-1).mean(-1)
 		x = self.out(x)
+
+		# x = self.layers(x)
+		# x = nn.AvgPool2d(x.shape[2:])(x)[...,0,0] oder x = x.mean(-1).mean(-1) 0> sollte rauskommen: x.shape = [b, d]
+		# x = self.out(x)
 
 		return x
 
