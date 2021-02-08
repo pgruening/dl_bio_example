@@ -73,6 +73,7 @@ class EVAL_CUSTOM_MODELS():
 		self.default_values = config.MNIST_PARAMS
 		self.default_values.update({
 			'model_type' : 'custom_net',
+			'sv_int' : [-1]
 
 		})
 		self.default_folder = EVAL_CUSTOM_MODELS.name
@@ -82,11 +83,10 @@ class EVAL_CUSTOM_MODELS():
 
 	def __call__(self):
 
-		num_layers = [2,3,5]
-		init_dims = [4,8,10]
+		num_layers = [3,5,7]
+		init_dims = [4,8]
 		k = 3
-		seeds = [0,815,42]
-
+		seeds = [0,23,42]
 
 
 		for seed in seeds:

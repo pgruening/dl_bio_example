@@ -1,11 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-
-
-
-
 class CustomNet(nn.Module):
 	def __init__(self, in_dim, out_dim, **kwargs):
 		super(CustomNet, self).__init__()
@@ -37,43 +32,9 @@ class CustomNet(nn.Module):
 		self.out = nn.Linear(in_channels, self.out_dim)
 
 
-
-
-
-
 	def forward(self, x):
 		x = self.layers(x)
 		x = x.mean(-1).mean(-1)
 		x = self.out(x)
 
-		# x = self.layers(x)
-		# x = nn.AvgPool2d(x.shape[2:])(x)[...,0,0] oder x = x.mean(-1).mean(-1) 0> sollte rauskommen: x.shape = [b, d]
-		# x = self.out(x)
-
 		return x
-
-
-
-class LeNet5(nn.Module):
-	def __init__(self, in_dim, out_dim):
-		super(LeNet5, self).__init__()
-		self.features = nn.Sequential(
-			nn.Conv2d(in_dim, 6, 5, bias=False),
-			nn.ReLU(),
-			nn.MaxPool2d(2, 2),
-			nn.Conv2d(6, 16, 5, bias=False),
-			nn.ReLU(),
-			nn.MaxPool2d(2, 2),
-			nn.Conv2d(16, 120, 5, bias=False),
-			nn.ReLU(),
-		)
-
-		self.mlp = nn.Sequential(
-			nn.Linear(120, 84, bias=False),
-			nn.Linear(84, out_dim, bias=True)
-		)
-
-	def forward(self, x):
-		x = self.features(x)[..., 0, 0]
-		y = self.mlp(x)
-		return y
