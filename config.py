@@ -28,12 +28,16 @@ if USER == 'david':
     NUM_CLASSES = 10
     IN_DIM = 3
 
-    #DATASET = nat_im'
+    WEIGHT_IDS = {
+        'custom_net':'14M3uC29aAx2AMeCeidLQjqjkVpGqnb6k'
+        }
+
 
     EXP_FOLDER = './experiments'
 
     PRINT_FREQUENCY = 100
 
+    
     # default training values
     LR = 0.001
     WD = 0.00001
@@ -66,7 +70,7 @@ if USER == 'david':
         'cs' : 244,
         'bs' : 16,
         'opt' : 'Adam',
-        'model_type' : 'resnet18'
+        'model_type' : 'custom_net'
     }
 
 DO_NOT_COPY += [EXP_FOLDER]
