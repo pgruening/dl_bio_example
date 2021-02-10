@@ -17,7 +17,7 @@ class CustomNet(nn.Module):
 		
 		in_channels = int(kwargs.get('init_dim', [8])[0])
 		self.layers = nn.Sequential(
-			nn.Conv2d(in_channels=in_dim, out_channels=in_channels, kernel_size=kernel_size ,bias=False),
+			nn.Conv2d(in_channels=in_dim, out_channels=in_channels, kernel_size=kernel_size, bias=False),
 			nn.BatchNorm2d(in_channels)
 		)
 		

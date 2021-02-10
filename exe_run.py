@@ -1,12 +1,23 @@
-from copy import copy, deepcopy
+from copy import deepcopy
 from os.path import join
 
-import config
+import argparse
 from DLBio import pt_run_parallel
 from DLBio.kwargs_translator import to_kwargs_str
 
 DEFAULT_TYPE = 'eval_custom_models'
 AVAILABLE_GPUS = [0]
+
+
+
+
+def get_options():
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument('--mode', type=str, default=DEFAULT_TYPE)
+
+	return parser.parse_args()
+
 
 class TrainingProcess(pt_run_parallel.ITrainingProcess):
 	def __init__(self, **kwargs):
@@ -18,8 +29,10 @@ class TrainingProcess(pt_run_parallel.ITrainingProcess):
 
 def run():
 	available_gpus = [int(x) for x in AVAILABLE_GPUS]
+
+	options = get_options()
 	
-	param_generator = get_param_generator(DEFAULT_TYPE)
+	param_generator = get_param_generator(options.mode)
 	print(param_generator)
 
 	make_object = pt_run_parallel.MakeObject(TrainingProcess)
@@ -39,13 +52,12 @@ def get_param_generator(name):
 	
 	raise ValueError(f'unkown input: {name}')
 
-	
 
 class LR_SEARCH():
 	name = 'lr_search'
 
 	def __init__(self):
-		self.default_values = config.MNIST_PARAMS
+		self.default_values = PARAMS.MNIST_PARAMS
 		self.default_values.update ({
 			'sv_int': -1,
 			'lr' : [0.1, 0.01, 0.001, 0.0001, 0.00001]
@@ -64,22 +76,17 @@ class LR_SEARCH():
 			yield out
 
 	
-
-
 class EVAL_CUSTOM_MODELS():
 	name = 'eval_custom_models'
 	
 	def __init__(self):		
-		self.default_values = config.MNIST_PARAMS
+		self.default_values = PARAMS.MNIST_PARAMS
 		self.default_values.update({
 			'model_type' : 'custom_net',
 			'sv_int' : [-1]
 
 		})
 		self.default_folder = EVAL_CUSTOM_MODELS.name
-
-
-
 
 	def __call__(self):
 
@@ -105,8 +112,33 @@ class EVAL_CUSTOM_MODELS():
 
 					yield out
 
-				
 
+class PARAMS():
+	NAT_IM_PARAMS = {
+		'dataset' : 'nat_im',
+		'in_dim' : 3,
+		'out_dim' : 8,
+		'lr' : 0.001,
+		'wd' : 0.0001,
+		'mom' : 0.9,
+		'cs' : 244,
+		'bs' : 16,
+		'opt' : 'Adam',
+		'model_type' : 'resnet18'
+	}
+
+	MNIST_PARAMS = {        
+		'dataset' : 'mnist',
+		'in_dim' : 3,
+		'out_dim' : 10,
+		'lr' : 0.001,
+		'wd' : 0.0001,
+		'mom' : 0.9,
+		'cs' : 244,
+		'bs' : 16,
+		'opt' : 'Adam',
+		'model_type' : 'custom_net'
+	}
 		
 				
 

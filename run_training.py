@@ -30,7 +30,7 @@ def get_options():
     parser.add_argument('--seed', type=int, default=0)
     
     parser.add_argument('--folder', type=str, default='_debug')
-
+    
     
     # model / ds specific params
     parser.add_argument('--in_dim', type=int, default=config.IN_DIM)
@@ -101,7 +101,9 @@ def _train_model(options, folder, device):
         options.model_type,
         options.in_dim,
         options.out_dim,
-        device, **model_kwargs
+        device,
+        config.USE_PRETRAINED,
+        **model_kwargs
     )
 
     if options.model_path is not None:

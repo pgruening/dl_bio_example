@@ -3,11 +3,24 @@ USER = 'david'
 if USER == 'philipp':
     DO_NOT_COPY = []
     # dataset
-    NAT_IM_BASE = 'data/natural_images'
+    NAT_IM_BASE = 'data/natural_images'     
+    DATA_FOLDER = 'data'
+    DATASET = 'mnist'
+    NUM_CLASSES = 10
+    IN_DIM = 3
 
-    EXP_FOLDER = './experiments/'
+    EXP_FOLDER = './experiments'
 
     PRINT_FREQUENCY = 100
+
+
+    # model
+    USE_PRETRAINED = False
+   
+    WEIGHT_IDS = {
+        }
+
+    
 
     # default training values
     LR = 0.001
@@ -15,8 +28,7 @@ if USER == 'philipp':
     BS = 16
     MOM = 0.9
     CS = 224
-    MT = 'my_model'
-    # MT = 'resnet18'
+    MT = 'resnet18'
     OPT = 'Adam'
 
 if USER == 'david':
@@ -28,14 +40,17 @@ if USER == 'david':
     NUM_CLASSES = 10
     IN_DIM = 3
 
-    WEIGHT_IDS = {
-        'custom_net':'14M3uC29aAx2AMeCeidLQjqjkVpGqnb6k'
-        }
-
-
     EXP_FOLDER = './experiments'
 
     PRINT_FREQUENCY = 100
+
+
+    # model
+    USE_PRETRAINED = False
+   
+    WEIGHT_IDS = {
+        'custom_net_layer5_dim8':'14M3uC29aAx2AMeCeidLQjqjkVpGqnb6k'
+        }
 
     
     # default training values
@@ -47,30 +62,5 @@ if USER == 'david':
     MT = 'custom_net'
     OPT = 'Adam'
 
-    NAT_IM_PARAMS = {
-        'dataset' : 'nat_im',
-        'in_dim' : 3,
-        'out_dim' : 8,
-        'lr' : 0.001,
-        'wd' : 0.0001,
-        'mom' : 0.9,
-        'cs' : 244,
-        'bs' : 16,
-        'opt' : 'Adam',
-        'model_type' : 'resnet18'
-    }
-
-    MNIST_PARAMS = {        
-        'dataset' : 'mnist',
-        'in_dim' : 3,
-        'out_dim' : 10,
-        'lr' : 0.001,
-        'wd' : 0.0001,
-        'mom' : 0.9,
-        'cs' : 244,
-        'bs' : 16,
-        'opt' : 'Adam',
-        'model_type' : 'custom_net'
-    }
 
 DO_NOT_COPY += [EXP_FOLDER]
