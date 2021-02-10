@@ -4,7 +4,4 @@ __pycache__/*
 debug.png
 experiments/*
 .vscode/settings.json
-test.py
-dummy.ipynb
-example.py
-run_tmux_docker.sh
+
