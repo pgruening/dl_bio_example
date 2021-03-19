@@ -36,7 +36,6 @@ def log_tensorboard(workdir, tb_out, dataloaders, numBatches=1, model=None):
 		
 		for key, dl in dataloaders.items():
 			if dl is not None:
-				print(key, dl)
 				di = iter(dl)
 				for i in range(numBatches):
 					images, _ = di.next()
