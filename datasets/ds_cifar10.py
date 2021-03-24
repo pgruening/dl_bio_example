@@ -6,8 +6,7 @@ import torchvision
 import torchvision.datasets as datasets
 from torch.utils.data import DataLoader, Dataset, SubsetRandomSampler
 from torchvision import transforms
-
-DATA_FOLDER = 'data'
+from config import DATA_FOLDER
 
 # this is the imagenet normalization:
 # https://github.com/pytorch/examples/blob/97304e232807082c2e7b54c597615dc0ad8f6173/imagenet/main.py#L197-L198
