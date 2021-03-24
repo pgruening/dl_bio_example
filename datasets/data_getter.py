@@ -1,5 +1,6 @@
 from . import ds_natural_images
 from . import ds_cifar10
+from . import ds_mnist
 
 
 def get_data_loaders(dataset, batch_size, **kwargs):
@@ -24,5 +25,13 @@ def get_data_loaders(dataset, batch_size, **kwargs):
             'test': None
         }
 
+    elif dataset == 'mnist':
+        return{
+            'train': ds_mnist.get_dataloader(
+                True, batch_size=batch_size),
+            'val': ds_mnist.get_dataloader(
+                False, batch_size=batch_size),
+            'test': None
+        }
     else:
-        raise ValueError(f'Unknown dataset: {dataset}')
+        raise ValueError(f'Unkown dataset: {dataset}')

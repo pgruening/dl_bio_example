@@ -27,7 +27,10 @@ class Classification(ITrainInterface):
         images, targets = sample[0].to(self.d), sample[1].to(self.d)
         pred = self.model(images)
 
-        loss = self.xent_loss(pred, targets[:, 0])
+        if targets.ndim == 2:
+            targets = targets[:,0]
+
+        loss = self.xent_loss(pred, targets)
         assert not bool(torch.isnan(loss))
         metrics = None
         counters = None

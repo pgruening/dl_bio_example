@@ -2,7 +2,7 @@
 
 Download the dataset on:
 https://www.kaggle.com/prasunroy/natural-images
-Unzip and remove the data folder (for some reason the data are save two times).
+Unzip and remove the data folder (for some reason the data are saved two times).
 
 ## Files:
 
