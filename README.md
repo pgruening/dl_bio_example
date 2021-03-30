@@ -53,3 +53,41 @@ project from its main file. Select "Docker: Python - Current" to start debugging
 currently in the editor selected file.
 More configurations can be added or present configurations can be changed in the
 ./vscode/launch.json and ./vscode/tasks.json.
+
+
+## Visdom
+Visdom eases to display data remotely. For general infos see their git: [visdom](https://github.com/fossasia/visdom).
+
+Here it is used to display the feature representation of a trained model. 
+The represantation is saved in `exe_save_embeddings.py` and plotted in `plot_embeddings.py`.
+
+Visdom can also be used for visualizing images and plots.
+Start the visdom server from the command line with `visdom` and add something to it for example like this:
+```python
+
+import visdom
+from datasets.ds_mnist import get_dataloader
+
+dl = get_dataloader(False, batch_size=16)	
+image = dl.dataset.data[0]
+
+vis = visdom.Visdom()
+vis.image(image)
+``` 
+
+### Installation
+You can install the stable version via pip but I would recommend installing it from source to get the current features (See https://github.com/fossasia/visdom#setup).
+
+For plotting the embeddings this has to be done anyway. 
+Because the `vis.embeddings` uses this package for the t-sne algorithm (https://github.com/lvdmaaten/bhtsne) you will probably have to install this as well. 
+For this, clone the repo into visdom/py/visdom/extra_deps and follow the installation steps here: https://github.com/lvdmaaten/bhtsne#installation
+
+
+
+
+## Tensorboard
+Tensorboard can be used to display training experiments. Infos at https://www.tensorflow.org/tensorboard and [here](https://pytorch.org/docs/stable/tensorboard.html) for using it in pytorch.
+Tensor behaves similarly to a jupyter notebook.
+
+The information which will be used by tensorboard can be stored during or after an experiment, see 'exe_log_tb.py' or `tensorboard_test.py`. 
+For `run_training`  this can be activated with `--log_tb`. By default the data will be stored in `runs/_debug` and can be visualized by 'tensorboard --logdir=runs' if tensorboard is installed.
