@@ -45,6 +45,7 @@ if USER == 'david':
     PRINT_FREQUENCY = 100
 
 
+    LOG_TB = True
     # model
     USE_PRETRAINED = False
    

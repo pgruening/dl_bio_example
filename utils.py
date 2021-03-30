@@ -67,13 +67,13 @@ def log_tensorboard(workdir, tb_out, dataloaders, numBatches=1, model=None, show
 		tb_writer.close()
 
 
-def to_uint(tensor_image):
-	tensor_image -= tensor_image.min()
-	tensor_image /= tensor_image.max()
-	tensor_image *= 255
-	tensor_image = np.array(tensor_image.detach().cpu()).astype('uint8')
+def to_uint(image):
+	image -= image.min()
+	image /= image.max()
+	image *= 255
+	image = np.array(image.detach().cpu()).astype('uint8')
 
-	return tensor_image
+	return image
 
 
 def label_images(images, labels):
