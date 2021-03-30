@@ -7,10 +7,11 @@ import visdom
 from PIL import Image
 
 from datasets.ds_mnist import get_dataloader
+import config
 
 type = 'short' 
-features_path = f'data/mnist_embeddings/embed_train_{type}.npy'
-labels_path = f'data/mnist_embeddings/embed_train_{type}_labels.npy'
+features_path = f'{config.FEATURES_OUT}/train_features_{type}.npy'
+labels_path = f'{config.FEATURES_OUT}/train_features_{type}_labels.npy'
 
 
 def get_options():

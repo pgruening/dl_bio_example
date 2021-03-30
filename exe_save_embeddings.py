@@ -5,6 +5,7 @@ This can be used in `plot_embeddings.py' for visualization the feature space wit
 
 
 
+import argparse
 from os.path import join
 
 import numpy as np
@@ -17,14 +18,9 @@ import config
 from datasets.ds_mnist import get_dataloader
 from models.model_getter import load_model_from_opt
 
+
 SAVE_SMALL = True
-
-model_wrk_dir = 'experiments/eval_custom_models_backup/layer5_dim8_seed0'
-
-DIR = "./data/"
-FOLDER = "mnist_embeddings"
-
-out_path = join(DIR,FOLDER)
+MODEL = 'experiments/eval_custom_models_backup/layer5_dim8_seed0'
 
 
 class EmbeddingModel(nn.Module):
@@ -38,26 +34,32 @@ class EmbeddingModel(nn.Module):
 		return x
 
 
-def run():
+def get_options():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--out_path', type=str, default=config.FEATURES_OUT)
+	parser.add_argument('--model', type=str, default=MODEL)
+	parser.add_argument('--save_small', action='store_true', default=SAVE_SMALL)
+
+	return parser.parse_args()
+
+def run(options):
 	device = get_device()
 
-	m = load_model(model_wrk_dir, device)
+	m = load_model(options.model, device)
 
 	model = EmbeddingModel(m).eval()
-
-
 	dl = get_dataloader(False, batch_size=config.BS)
 	dataset, labels =  get_embeddings(dl, model, device)
 
 	print("embeddings received")
 
-	if SAVE_SMALL:
-		filename = join(out_path, "embed_train_short")
+	if options.save_small:
+		filename = join(options.out_path, "train_features_short")
 		ds = dataset[:1000,...]
 		lbs = labels[:1000,...]
 		save_np(ds, lbs, filename)
 
-	filename = join(out_path, "embed_train_full")
+	filename = join(options.out_path, "train_features_full")
 	save_np(dataset, labels, filename)
 
 
@@ -97,5 +99,5 @@ def load_model(wrk_dir, device=None, model_path=None):
 
 
 if __name__ == '__main__':
-
-	run()
+	options = get_options()
+	run(options)

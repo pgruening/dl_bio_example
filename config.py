@@ -64,4 +64,7 @@ if USER == 'david':
     OPT = 'Adam'
 
 
+    FEATURES_OUT = "data/mnist_features/"
+
+
 DO_NOT_COPY += [EXP_FOLDER]

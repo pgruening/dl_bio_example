@@ -78,7 +78,7 @@ vis.image(image)
 ### Installation
 You can install the stable version via pip but I would recommend installing it from source to get the current features (See https://github.com/fossasia/visdom#setup).
 
-For plotting the embeddings this has to be done anyway. 
+For plotting the embeddings this has to be done anyway at the moment (march 21). 
 Because the `vis.embeddings` uses this package for the t-sne algorithm (https://github.com/lvdmaaten/bhtsne) you will probably have to install this as well. 
 For this, clone the repo into visdom/py/visdom/extra_deps and follow the installation steps here: https://github.com/lvdmaaten/bhtsne#installation
 
