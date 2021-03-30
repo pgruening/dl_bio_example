@@ -54,6 +54,7 @@ RUN apt install libgl1-mesa-glx -y
 RUN apt install libglib2.0-0 -y
 
 RUN pip install seaborn
+RUN pip install tensorboard
 
 WORKDIR /other_py_packages
 RUN git clone https://github.com/cybertronai/pytorch-lamb.git
