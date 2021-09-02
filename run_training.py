@@ -1,4 +1,5 @@
 import argparse
+from exe_log_tb import log_tensorboard
 import json
 from os.path import isdir, join
 
@@ -8,6 +9,7 @@ from DLBio.helpers import check_mkdir, copy_source, save_options
 from DLBio.pt_train_printer import Printer
 from DLBio.pytorch_helpers import get_device, get_num_params
 from DLBio.kwargs_translator import get_kwargs
+
 
 import config
 from train_interfaces import get_interface
@@ -55,6 +57,8 @@ def get_options():
     parser.add_argument('--early_stopping', action='store_true')
 
     parser.add_argument('--do_overwrite', action='store_true')
+    
+    parser.add_argument('--log_tb', action='store_true', default=config.LOG_TB)
 
     return parser.parse_args()
 
@@ -155,10 +159,13 @@ def _train_model(options, folder, device):
         val_data_loader=data_loaders['val'],
         early_stopping=early_stopping,
         save_state_dict=True,
-        test_data_loader=data_loaders['test']
+        test_data_loader=data_loaders['test'],
     )
 
     training(options.epochs)
+
+    if options.log_tb:
+        log_tensorboard(folder, join("runs", options.folder), data_loaders, 3, model)
 
 
 def write_model_specs(folder, model):

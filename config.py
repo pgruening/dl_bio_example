@@ -45,6 +45,7 @@ if USER == 'david':
     PRINT_FREQUENCY = 100
 
 
+    LOG_TB = True
     # model
     USE_PRETRAINED = False
    
@@ -61,6 +62,9 @@ if USER == 'david':
     CS = 224
     MT = 'custom_net'
     OPT = 'Adam'
+
+
+    FEATURES_OUT = "data/mnist_features/"
 
 
 DO_NOT_COPY += [EXP_FOLDER]

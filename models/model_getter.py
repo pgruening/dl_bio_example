@@ -1,6 +1,8 @@
 from torchvision.models import resnet18, vgg16_bn, alexnet
 import torch.nn as nn
 
+from DLBio.kwargs_translator import get_kwargs
+
 from models.costum_archs import CustomNet
 
 
@@ -30,7 +32,6 @@ def get_model(model_type, input_dim, output_dim, device, pretrained, **kwargs):
 
 	elif model_type == 'custom_net':
 		model = CustomNet(input_dim, output_dim, **kwargs)
-
 		
 		layer = int(kwargs.get('num_layer', [5])[0])		
 		dim = int(kwargs.get('init_dim', [8])[0])
@@ -43,7 +44,6 @@ def get_model(model_type, input_dim, output_dim, device, pretrained, **kwargs):
 
 		return model.to(device)
 	
-
 
 def get_weights(model_name):
 	"""
@@ -90,3 +90,25 @@ def get_weights(model_name):
 	return torch.load(file_dest) 
 
 	
+def load_model_from_opt(options, device):
+	"""wrapper for get_model to work with only options and device as parameters
+	needed for dlbio's 'load_model_with_opt'
+
+	Returns
+	-------
+	pytorch model
+		the pytorch model from get_model
+	"""	
+	mt = options.model_type
+	in_dim = options.in_dim
+	out_dim = options.out_dim
+	model_kw = get_kwargs(options.model_kw)
+
+
+	if hasattr(options,"model_kw"):
+		kw = options.model_kw
+		model_kw = get_kwargs(kw)
+	else:
+		model_kw = dict()
+
+	return get_model(mt, in_dim, out_dim, device, False, **model_kw)
