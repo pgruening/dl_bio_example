@@ -1,21 +1,21 @@
 import argparse
-from exe_log_tb import log_tensorboard
+import copy
 import json
 from os.path import isdir, join
 
 import torch
 from DLBio import pt_training
-from DLBio.helpers import check_mkdir, copy_source, save_options
+from DLBio.helpers import (check_mkdir, copy_source, dict_to_options,
+                           save_options)
+from DLBio.kwargs_translator import get_kwargs
 from DLBio.pt_train_printer import Printer
 from DLBio.pytorch_helpers import get_device, get_num_params
-from DLBio.kwargs_translator import get_kwargs
-
 
 import config
-from train_interfaces import get_interface
-
 from datasets.data_getter import get_data_loaders
+from exe_log_tb import log_tensorboard
 from models.model_getter import get_model
+from train_interfaces import get_interface
 
 
 def get_options():
@@ -30,10 +30,9 @@ def get_options():
     parser.add_argument('--opt', type=str, default=config.OPT)
     parser.add_argument('--device', type=int, default=None)
     parser.add_argument('--seed', type=int, default=0)
-    
+
     parser.add_argument('--folder', type=str, default='_debug')
-    
-    
+
     # model / ds specific params
     parser.add_argument('--in_dim', type=int, default=config.IN_DIM)
     parser.add_argument('--out_dim', type=int, default=config.NUM_CLASSES)
@@ -47,8 +46,9 @@ def get_options():
     parser.add_argument('--fixed_steps', nargs='+', default=None)
 
     # dataset
-    parser.add_argument('--split_index', type=int, default=0)
     parser.add_argument('--dataset', type=str, default=config.DATASET)
+    parser.add_argument('--ds_kwargs', type=str, default=None)
+    parser.add_argument('--nw', type=int, default=0)
 
     # model saving
     parser.add_argument('--model_kw', type=str, default=None)
@@ -57,7 +57,7 @@ def get_options():
     parser.add_argument('--early_stopping', action='store_true')
 
     parser.add_argument('--do_overwrite', action='store_true')
-    
+
     parser.add_argument('--log_tb', action='store_true', default=config.LOG_TB)
 
     return parser.parse_args()
@@ -71,7 +71,7 @@ def run(options):
 
     pt_training.set_random_seed(options.seed)
 
-    folder = join(config.EXP_FOLDER, options.folder)
+    folder = options.folder
 
     if not options.do_overwrite:
         if abort_due_to_overwrite_safety(folder):
@@ -98,22 +98,7 @@ def _train_model(options, folder, device):
     log_file = join(folder, 'log.json')
     check_mkdir(log_file)
 
-    
-    model_kwargs = get_kwargs(options.model_kw)
-
-    model = get_model(
-        options.model_type,
-        options.in_dim,
-        options.out_dim,
-        device,
-        config.USE_PRETRAINED,
-        **model_kwargs
-    )
-
-    if options.model_path is not None:
-        model_sd = torch.load(options.model_path).state_dict()
-        model.load_state_dict(model_sd, strict=False)
-
+    model = load_model(options, device)
     write_model_specs(folder, model)
 
     optimizer = pt_training.get_optimizer(
@@ -131,13 +116,10 @@ def _train_model(options, folder, device):
     else:
         print('no scheduling used')
         scheduler = None
-        
+
     print(f'ds_{options.dataset}')
 
-    data_loaders = get_data_loaders(
-        options.dataset, options.bs,
-        split_index=options.split_index
-    )
+    data_loaders = get_data(options)
 
     if options.early_stopping:
         assert options.sv_int == -1
@@ -164,9 +146,6 @@ def _train_model(options, folder, device):
 
     training(options.epochs)
 
-    if options.log_tb:
-        log_tensorboard(folder, join("runs", options.folder), data_loaders, 3, model)
-
 
 def write_model_specs(folder, model):
 
@@ -192,6 +171,45 @@ def abort_due_to_overwrite_safety(folder):
             abort = True
 
     return abort
+
+
+def get_data(options):
+    options = copy.deepcopy(options)
+    if isinstance(options, dict):
+        options = dict_to_options(options)
+    if options.ds_kwargs is not None:
+        ds_kwargs = get_kwargs(options.ds_kwargs)
+    else:
+        ds_kwargs = None
+    return get_data_loaders(
+        options.dataset, options.bs, options.nw,
+        **ds_kwargs
+    )
+
+
+def load_model(options, device, new_model_path=None):
+    if isinstance(options, dict):
+        options = dict_to_options(options)
+
+    model_kwargs = get_kwargs(options.model_kw)
+
+    model = get_model(
+        options.model_type,
+        options.in_dim,
+        options.out_dim,
+        device,
+        **model_kwargs
+    )
+
+    if hasattr(model, 'model_path') and options.model_path is not None:
+        model_sd = torch.load(options.model_path).state_dict()
+        model.load_state_dict(model_sd, strict=True)
+
+    if new_model_path is not None:
+        model_sd = torch.load(new_model_path).state_dict()
+        model.load_state_dict(model_sd, strict=True)
+
+    return model
 
 
 if __name__ == "__main__":
