@@ -4,40 +4,39 @@ from config import DATA_FOLDER
 
 
 def get_dataloader(
-    is_train=True, indeces=None, batch_size=32, num_workers=0,
-        data_path=DATA_FOLDER):
-    # https://discuss.pytorch.org/t/train-on-a-fraction-of-the-data-set/16743/6
-    dataset = get_dataset(is_train, data_path)
+    is_train=True, batch_size=32, num_workers=0,
+        data_path=DATA_FOLDER, **kwargs):
 
-    if indeces is None:
-        data_loader = DataLoader(
-            dataset,
-            batch_size=batch_size,
-            shuffle=is_train,
-            num_workers=num_workers
-        )
-    else:
-        data_loader = DataLoader(
-            dataset,
-            batch_size=batch_size,
-            shuffle=is_train,
-            num_workers=num_workers,
-            sampler=SubsetRandomSampler(indeces)
-        )
+    convert_to_rgb = kwargs.get('convert_to_rgb', [False])[0]
+    dataset = get_dataset(is_train, data_path, convert_to_rgb=convert_to_rgb)
+
+    data_loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=is_train,
+        num_workers=num_workers
+    )
     return data_loader
 
 
-def get_dataset(is_train=True, data_path=DATA_FOLDER):
+def get_dataset(is_train=True, data_path=DATA_FOLDER, convert_to_rgb=False):
+    if convert_to_rgb:
+        aug = [torchvision.transforms.Lambda(lambda x: x.convert('RGB'))]
+    else:
+        aug = []
+
+    aug += [
+        torchvision.transforms.ToTensor(),
+        torchvision.transforms.Normalize(
+            (0.1307,), (0.3081,))
+    ]
+    aug = torchvision.transforms.Compose(aug)
+
     dataset = torchvision.datasets.MNIST(
         data_path,
         train=is_train,
         download=True,
-        transform=torchvision.transforms.Compose([
-            torchvision.transforms.Lambda(lambda x: x.convert('RGB')),
-            torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize(
-                (0.1307,), (0.3081,))
-        ])
+        transform=aug
     )
 
     return dataset
