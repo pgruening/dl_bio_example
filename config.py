@@ -1,9 +1,12 @@
+"""
+This file may be deprecated.
+"""
 USER = 'david'
 
 if USER == 'philipp':
     DO_NOT_COPY = []
     # dataset
-    NAT_IM_BASE = 'data/natural_images'     
+    NAT_IM_BASE = 'data/natural_images'
     DATA_FOLDER = 'data'
     DATASET = 'mnist'
     NUM_CLASSES = 10
@@ -13,14 +16,11 @@ if USER == 'philipp':
 
     PRINT_FREQUENCY = 100
 
-
     # model
     USE_PRETRAINED = False
-   
-    WEIGHT_IDS = {
-        }
 
-    
+    WEIGHT_IDS = {
+    }
 
     # default training values
     LR = 0.001
@@ -34,7 +34,7 @@ if USER == 'philipp':
 if USER == 'david':
     DO_NOT_COPY = []
     # dataset
-    NAT_IM_BASE = 'data/natural_images'     
+    NAT_IM_BASE = 'data/natural_images'
     DATA_FOLDER = 'data'
     DATASET = 'mnist'
     NUM_CLASSES = 10
@@ -44,16 +44,14 @@ if USER == 'david':
 
     PRINT_FREQUENCY = 100
 
-
     LOG_TB = True
     # model
     USE_PRETRAINED = False
-   
-    WEIGHT_IDS = {
-        'custom_net_layer5_dim8':'14M3uC29aAx2AMeCeidLQjqjkVpGqnb6k'
-        }
 
-    
+    WEIGHT_IDS = {
+        'custom_net_layer5_dim8': '14M3uC29aAx2AMeCeidLQjqjkVpGqnb6k'
+    }
+
     # default training values
     LR = 0.001
     WD = 0.00001
@@ -62,7 +60,6 @@ if USER == 'david':
     CS = 224
     MT = 'custom_net'
     OPT = 'Adam'
-
 
     FEATURES_OUT = "data/mnist_features/"
 
