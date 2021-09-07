@@ -13,7 +13,7 @@ from DLBio.pytorch_helpers import get_device, get_num_params
 
 import config
 from datasets.data_getter import get_data_loaders
-from exe_log_tb import log_tensorboard
+from helpers import log_tensorboard
 from models.model_getter import get_model
 from train_interfaces import get_interface
 
