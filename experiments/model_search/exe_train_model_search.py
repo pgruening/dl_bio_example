@@ -39,6 +39,7 @@ AVAILABLE_GPUS = [0]
 BASE_FOLDER = 'experiments/model_search'  # the folder of the experiment
 EXE_FILE = 'run_training.py'  # will be called as a subprocess
 CREATE_TBOARD_RUNS = True  # create tensorboard files to look at the model
+RUN_TRAINING = True  # run the training processes
 
 # These keywords are passed directly to run_training.py
 DEFAULT_KWARGS = {
@@ -222,4 +223,5 @@ if __name__ == "__main__":
     if CREATE_TBOARD_RUNS:
         check_tensorboard()
 
-    run()
+    if RUN_TRAINING:
+        run()
