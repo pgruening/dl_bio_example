@@ -116,7 +116,9 @@ def run():
         log_file=join(BASE_FOLDER, 'parallel_train_log.txt'),
         # running too many processes at once may cause errors. Use this
         # argument to restrict the number of parallel processes
-        max_num_processes_per_gpu=4
+        # Also, if the machine you're using does not have a lot of RAM
+        # (<8 GByte) you might run into trouble.
+        max_num_processes_per_gpu=1
     )
 
 
@@ -220,8 +222,8 @@ def param_generator():
 
 
 if __name__ == "__main__":
-    if CREATE_TBOARD_RUNS:
-        check_tensorboard()
-
     if RUN_TRAINING:
         run()
+
+    if CREATE_TBOARD_RUNS:
+        check_tensorboard()
