@@ -116,7 +116,7 @@ def run():
         log_file=join(BASE_FOLDER, 'parallel_train_log.txt'),
         # running too many processes at once may cause errors. Use this
         # argument to restrict the number of parallel processes
-        max_num_processes=4
+        max_num_processes_per_gpu=4
     )
 
 
