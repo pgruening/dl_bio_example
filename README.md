@@ -90,7 +90,7 @@ workon dlbio_example
 ```
 
 ### Install the necessary packages
-To install the needed packages run:
+**Only run the following command if you are in the dlbio_example VE!** To install the needed packages run:
 
 ```
 pip install -r requirements.txt 
