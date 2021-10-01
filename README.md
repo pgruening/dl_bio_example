@@ -10,6 +10,93 @@ The actual code for running and evaluating a single experiment is stored into a 
 
 You can find an example for the training and evaluation of different model architectures on MNIST in the 'experiment/model_search'-folder.
 
+## Setup
+
+Run a terminal and follow the instructions below.
+
+### Add the working directory to the PYTHONPATH
+
+Most of the execute files are nested in the experiment folders. To import modules from the parent folder (e.g., helpers.py) you'll need to add the parent folder path to your PYTHONPATH.
+
+On linux, open your .bashrc file in your home directory:
+```
+nano ~/.bashrc
+```
+
+Now add the path to the dlbio_example folder to your PYTHONPATH. To do this, just append this line (don't forget to write the actual path, not "your/path/to"):
+
+```
+export PYTHONPATH=your/path/to/dlbio_example:$PYTHONPATH
+```
+
+First press "control+o", then "control+x" to save your changes and exit nano. Finally, update the changes in your current terminal. You'll only need to do this once:
+
+```
+source ~/.bashrc
+```
+### Using virtual environments
+
+One easy way to keep track of different packages with different version for different projects is a python virtual environment (VE).
+
+To install virtualenv, run
+
+```
+sudo apt install virtualenv 
+```
+
+To facilitate the use of VEs, you can use the virtualenvwrapper package. Run:
+
+```
+pip install virtualenvwrapper
+```
+
+Again, open your .bashrc file with:
+```
+nano ~/.bashrc
+```
+
+In nano, append these lines to your file:
+
+```
+# virtualenv and virtualenvwrapper
+export WORKON_HOME=/nfshome/gruening/.virtualenvs
+source ~/.local/bin/virtualenvwrapper.sh
+export PATH=$PATH:~/.local/bin
+```
+
+save and exit, then run:
+```
+source ~/.bashrc
+```
+
+At this point, you should be able to create a new VE with
+
+```
+mkvirtualenv dlbio_example -p python3
+```
+
+After running the command successfully, you should see a difference in your terminal: 
+```
+(dlbio_example) your_name@your_pc:
+```
+
+"(dlbio_example)" indicates that you are no in the new VE, called dlbio_example. When you run python, your version should be python3.XXX, because you specified python3 to be your main interpreter.
+
+You can exit the VE with running "deactivate", (dlbio_example) disappears from your terminal. Note how, when running "python" again, your python version is now python2.7.XXX, the main interpreter outside the VE.
+
+You can enter the VE again via:
+```
+workon dlbio_example
+```
+
+### Install the necessary packages
+To install the needed packages run:
+
+```
+pip install -r requirements.txt 
+```
+
+Now, you should be able to run the code, e.g., "python experiments/model_search/exe_train_model_search.py". Note that, if you don't run the code within the VE, you'll get import errors.
 ## Important Files
 
 ### run_training.py
