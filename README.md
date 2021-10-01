@@ -4,7 +4,7 @@ The main purpose of this repository is to give examples how to train and evaluat
 
 The actual code for running and evaluating a single experiment is stored into a subfolder in the 'experiment' folder. The folder should contain:
 
-* A [README.md](https://github.com/pgruening/dl_bio_example) file, describing the experiment. Including idea, results, and conclusion.
+* A [README.md](https://github.com/pgruening/dl_bio_example/tree/main/experiments/model_search#readme) file, describing the experiment. Including idea, results, and conclusion.
 * A script 'exe_[...].py' to run the training processes. This script usually saves log.json files, containing, e.g., the training curves, opt.json that store information about the model and dataset, and the weights of a model ('model.pt'). 
 * A python script to evaluate the results. Usually, based on the log files.
 
