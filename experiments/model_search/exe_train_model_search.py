@@ -41,6 +41,17 @@ EXE_FILE = 'run_training.py'  # will be called as a subprocess
 CREATE_TBOARD_RUNS = True  # create tensorboard files to look at the model
 RUN_TRAINING = True  # run the training processes
 
+# If there are problems with the GPU memory prediction, you can disable it here.
+# Instead, 'DEFAULT_GPU_MEM' is the predicted memory for each run.
+DO_PREDICT_GPU_MEM = True
+DEFAULT_GPU_MEM = 1000  # MegaByte
+
+# NOTE: Be careful with this parameter:
+# Defines how many parallel processes can be trained on one gpu. A number > 4,
+# can cause CUDA to crash. Furthermore, if each run loads a large dataset into
+# RAM, your computer may start swapping.
+MAX_N_PROCESSES_PER_GPU = 1
+
 # These keywords are passed directly to run_training.py
 DEFAULT_KWARGS = {
     'lr': 0.01,  # learning rate
@@ -118,7 +129,7 @@ def run():
         # argument to restrict the number of parallel processes
         # Also, if the machine you're using does not have a lot of RAM
         # (<8 GByte) you might run into trouble.
-        max_num_processes_per_gpu=1
+        max_num_processes_per_gpu=MAX_N_PROCESSES_PER_GPU
     )
 
 
@@ -206,11 +217,14 @@ def param_generator():
         # add dataset-specific parameters
         parameters['ds_kwargs'] = get_ds_kwargs(values, to_search)
 
-        # try to predict how much memory the model will use on the gpu
-        parameters['mem_used'] = pt_run_parallel.predict_needed_gpu_memory(
-            parameters, input_shape=(parameters['bs'], 1, 28, 28),
-            load_model_fcn=load_model, device=AVAILABLE_GPUS[0]
-        )
+        if DO_PREDICT_GPU_MEM:
+            # try to predict how much memory the model will use on the gpu
+            parameters['mem_used'] = pt_run_parallel.predict_needed_gpu_memory(
+                parameters, input_shape=(parameters['bs'], 1, 28, 28),
+                load_model_fcn=load_model, device=AVAILABLE_GPUS[0]
+            )
+        else:
+            parameters['mem_used'] = DEFAULT_GPU_MEM
 
         # define where all training data will be saved
         parameters['folder'] = join(
