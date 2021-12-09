@@ -180,7 +180,7 @@ def get_data(options):
     if options.ds_kwargs is not None:
         ds_kwargs = get_kwargs(options.ds_kwargs)
     else:
-        ds_kwargs = None
+        ds_kwargs = {}
     return get_data_loaders(
         options.dataset, options.bs, options.nw,
         **ds_kwargs
